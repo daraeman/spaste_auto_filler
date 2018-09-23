@@ -21,6 +21,7 @@ function init() {
 	let url_matches = location.pathname.match( /^\/(s|go)\// );
 
 	if ( url_matches && url_matches[1] ) {
+		let page = url_matches[1];
 		if ( page === "s" )
 			return doCaptchaPage();
 		else if ( page === "go" )
