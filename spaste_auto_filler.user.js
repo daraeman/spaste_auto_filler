@@ -6,7 +6,7 @@
 // @author       daraeman
 // @version      1.0
 // @date         2018-09-22
-// @include      /https?:(\/\/www\.)?spaste\.com\/(s|go)\/.*/
+// @include      /https?:(\/\/www\.)?spaste\.com\/(s\/|go\/|site\/checkPasteUrl).*/
 // @require      https://code.jquery.com/jquery-3.3.1.slim.min.js#sha256=3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=
 // @downloadURL  https://github.com/daraeman/spaste_auto_filler/raw/master/spaste_auto_filler.user.js
 // @updateURL    https://github.com/daraeman/spaste_auto_filler/raw/master/spaste_auto_filler.meta.js
@@ -21,13 +21,13 @@ function init() {
 	console.log( "Spaste Auto Filler Enabled" );
 
 	// page switcher
-	let url_matches = location.pathname.match( /^\/(s|go)\// );
+	let url_matches = location.pathname.match( /^\/(s\/|go\/|site\/checkPasteUrl)/ );
 
 	if ( url_matches && url_matches[1] ) {
 		let page = url_matches[1];
-		if ( page === "s" )
+		if ( page === "s/" || page === "site/checkPasteUrl" )
 			return doCaptchaPage();
-		else if ( page === "go" )
+		else if ( page === "go/" )
 			return doLinkPage();
 	}
 
