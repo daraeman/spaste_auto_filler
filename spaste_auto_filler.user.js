@@ -12,6 +12,9 @@
 // @updateURL    https://github.com/daraeman/spaste_auto_filler/raw/master/spaste_auto_filler.meta.js
 // ==/UserScript==
 
+const link_timeout = 2 * 60 * 1000; // stop trying to get the link after 2 minutes
+const check_interval = 200; // check for the link every 0.2 seconds
+
 init();
 
 function init() {
@@ -78,11 +81,41 @@ function doQuestion() {
 }
 
 function followLink() {
-	$( "h3" ).each( function(){
-		let el = $(this);
-		let text = el.text();
-		if ( /Your link is/.test( text ) )
-			el.find( "a" ).trigger( "click" );
-	});
+
+	let start_time = +new Date();
+
+	waitForLink( start_time )
+		.then( ( el ) => {
+			location.href = el.find( "a" ).attr( "href" );
+		})
+		.catch( ( error ) => {
+			console.error( error );
+		});
 }
 
+function waitForLink( start_time ) {
+
+	return new Promise( ( resolve, reject ) => {
+
+		let interval = setInterval( function(){
+
+			$( "h3" ).each( function(){
+				let el = $(this);
+				let text = el.text();
+				let link = el.find( "a" );
+				if ( /Your link is :/.test( text ) && link.length === 1 && link.attr( "href" ).length ) {
+					clearInterval( interval );
+					return resolve( el );
+				}
+				else {
+					let current_time = +new Date();
+					if ( ( current_time - start_time ) > link_timeout ) {
+						clearInterval( interval );
+						return reject( "Link Find timeout reached" );
+					}
+				}
+			});
+
+		}, check_interval );
+	});
+}
