@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Spaste Auto Filler
 // @namespace    spaste_auto_filler
-// @description  Auto completes tehe captchas and follows the link on spast pages
+// @description  Auto completes the captchas and follows the link on spaste pages
 // @homepageURL  https://github.com/daraeman/spaste_auto_filler
 // @author       daraeman
 // @version      1.0
